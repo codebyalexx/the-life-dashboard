@@ -1,3 +1,4 @@
+import React from "react";
 import {frenchMonth} from "@/lib/date";
 import {FoodCaloriesPanel} from "@/src/features/layout/food/FoodCaloriesPanel";
 
