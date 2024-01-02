@@ -3,13 +3,14 @@
 import {cn} from "@/lib/utils";
 import {Progress} from "@/components/ui/progress";
 import {useState} from "react";
+import GoalDrawer from "./GoalDrawer";
 
 export const FoodCaloriesPanel = ({ props, className }: any) => {
     return (<div {...props} className={cn('rounded-lg bg-black/5 dark:bg-white/15', className)}>
         <div className={'p-3 py-5'}>
             <div className={'flex flex-row items-end justify-between mb-1'}>
                 <h3 className={'text-3xl font-bold mr-4'}>1500 <span className={'text-sm font-normal text-muted-foreground'}>Kcal</span></h3>
-                <p className={'text-sm font-medium'}>Goal 1800 kcal</p>
+                <p className={'text-sm font-medium'}><GoalDrawer /> Goal 1800 kcal</p>
             </div>
             <Progress value={(15/18)*100} className={'w-full'} />
         </div>
