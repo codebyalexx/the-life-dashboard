@@ -3,14 +3,13 @@
 import { Button } from '@/components/ui/button'
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer'
 import { MinusIcon, Pencil, PlusIcon } from 'lucide-react'
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { adjustGoal, selectGoal } from './foodSlice'
 
 export default function GoalDrawer() {
-  const [goal, setGoal] = useState(1800)
-
-  const adjustGoal = (difference: number) => {
-    setGoal(Math.max(1200, Math.min(5000, goal + difference)))
-  }
+  const dispatch = useDispatch()
+  const goal = useSelector(selectGoal)
 
   return (
     <Drawer>
@@ -31,7 +30,7 @@ export default function GoalDrawer() {
                 variant={'outline'}
                 size={'icon'}
                 className='h-8 w-8 shrink-0 rounded-full'
-                onClick={() => adjustGoal(-25)}>
+                onClick={() => dispatch(adjustGoal(-25))}>
                   <MinusIcon className='h-4 w-4' />
                   <span className='sr-only'>Decrease</span>
                 </Button>
@@ -47,7 +46,7 @@ export default function GoalDrawer() {
                 variant={'outline'}
                 size={'icon'}
                 className='h-8 w-8 shrink-0 rounded-full'
-                onClick={() => adjustGoal(25)}>
+                onClick={() => dispatch(adjustGoal(25))}>
                   <PlusIcon className='h-4 w-4' />
                   <span className='sr-only'>Augmenter</span>
                 </Button>
