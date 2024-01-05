@@ -54,8 +54,21 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  username  String?
-  bio       String?
-  link      String?
+  caloriesGoal Int        @default(1800)
+  username     String?
+  bio          String?
+  link         String?
+  createdAt    DateTime   @default(now())
+  foods        UserFood[]
+}
+
+model UserFood {
+  id        String   @id @default(cuid())
+  userId    String
+  carbs     Int      @default(0)
+  fat       Int      @default(0)
+  proteins  Int      @default(0)
   createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
