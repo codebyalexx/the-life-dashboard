@@ -16,7 +16,10 @@ export const authOptions: AuthOptions = {
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET
         })
-    ]
+    ],
+    pages: {
+        signIn: '/auth'
+    }
 }
 
 export const getAuthSession = async() => await getServerSession(authOptions)
