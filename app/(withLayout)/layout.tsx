@@ -19,8 +19,10 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  authmodal
 }: {
   children: React.ReactNode
+  authmodal?: React.ReactNode
 }) {
     const session = await getAuthSession()
     return (
@@ -40,6 +42,7 @@ export default async function RootLayout({
                             </div>
                             <Footer />
                         </div>
+                        {authmodal}
                     </ThemeProvider>
                 </ReduxStoreProvider>
             </body>

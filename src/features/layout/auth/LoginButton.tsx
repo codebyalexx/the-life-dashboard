@@ -1,19 +1,16 @@
 "use client";
 
-import {Button} from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import { Loader } from "@/components/ui/loader";
+import { cn } from "@/lib/utils";
 import {LogIn} from "lucide-react";
-import {signIn} from "next-auth/react";
-import { useTransition } from "react";
+import Link from "next/link";
 
 export const LoginButton = () => {
-    const [isPending, startTransition] = useTransition()
     return (
-        <Button onClick={() => {
-            startTransition(() => signIn())
-        }}>
-            {isPending ? <Loader className="mr-2 h-4 w-4" /> : <LogIn className={'mr-2 h-4 w-4'}/>}
+        <Link href={'/auth'} className={buttonVariants({ variant: 'default' })}>
+            <LogIn className={'mr-2 h-4 w-4'}/>
             Connexion
-        </Button>
+        </Link>
     )
 }

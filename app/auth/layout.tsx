@@ -1,4 +1,5 @@
 import '@/app/index.css'
+import { ThemeProvider } from '@/src/theme/ThemeProvider'
 
 export const metadata = {
   title: 'Next.js',
@@ -12,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+        <body>
+          {children}
+        </body>
+      </ThemeProvider>
     </html>
   )
 }
