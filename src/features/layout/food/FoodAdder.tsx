@@ -8,7 +8,7 @@ import { Session } from "next-auth"
 import { addFood } from "@/src/actions/food.action"
 
 export const FoodAdder = ({session}: {session: Session | null}) => {
-    const [nutriments, setNutriments] = useState({carbs: 0, fat: 0, proteins: 0})
+    const [nutriments, setNutriments] = useState({carbs: '', fat: '', proteins: ''})
 
     const onNutrimentChange = (e: ChangeEvent) => {
         const name = e.target.name;
