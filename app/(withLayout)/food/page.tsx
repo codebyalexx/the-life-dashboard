@@ -1,8 +1,12 @@
 import React from "react";
 import {frenchMonth} from "@/lib/date";
 import {FoodCaloriesPanel} from "@/src/features/layout/food/FoodCaloriesPanel";
+import { FoodAdder } from "@/src/features/layout/food/FoodAdder";
+import { Separator } from "@/components/ui/separator";
+import { getAuthSession } from "@/lib/auth";
 
-export default function Food() {
+export default async function Food() {
+    const session = await getAuthSession()
     const date = new Date()
     
     return (<div className={'px-4'}>
@@ -13,6 +17,10 @@ export default function Food() {
                 <span className={'text-sm text-muted-foreground font-normal'}>{date.getDate()} {frenchMonth[date.getMonth()]} {date.getFullYear()}</span>
             </span>
         </h2>
-        <FoodCaloriesPanel className={'mb-4'} />
+        <FoodCaloriesPanel />
+        <Separator className="my-4" />
+        <FoodAdder session={session} />
+        <Separator className="my-4" />
+        <h3 className="text-lg font-semibold mb-2">Liste des aliments (aujourd&apos;hui)</h3>
     </div>)
 }
