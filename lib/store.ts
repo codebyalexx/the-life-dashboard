@@ -3,7 +3,12 @@ import { configureStore } from "@reduxjs/toolkit"
 
 export type StoreType = {
     food: {
-        goal: number,
+        goal: {
+            calories: number,
+            carbs: number,
+            fat: number,
+            proteins: number
+        },
         items: FoodItem[]
     }
 }

@@ -4,11 +4,13 @@ import {FoodCaloriesPanel} from "@/src/features/layout/food/FoodCaloriesPanel";
 import { FoodAdder } from "@/src/features/layout/food/FoodAdder";
 import { Separator } from "@/components/ui/separator";
 import { getAuthSession } from "@/lib/auth";
-import { getFood } from "@/src/queries/food.query";
+import { getFood, getGoals } from "@/src/queries/food.query";
 
 export default async function Food() {
     const session = await getAuthSession()
     const userFood = await getFood(session?.user?.id)
+    const userGoals = await getGoals(session?.user?.id)
+
     const date = new Date()
     
     return (<div className={'px-4'}>
@@ -19,7 +21,7 @@ export default async function Food() {
                 <span className={'text-sm text-muted-foreground font-normal'}>{date.getDate()} {frenchMonth[date.getMonth()]} {date.getFullYear()}</span>
             </span>
         </h2>
-        <FoodCaloriesPanel userFood={userFood} />
+        <FoodCaloriesPanel session={session} userFood={userFood} userGoals={userGoals} />
         <Separator className="my-4" />
         <FoodAdder session={session} />
         <Separator className="my-4" />

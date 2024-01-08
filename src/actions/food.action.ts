@@ -39,3 +39,22 @@ export const addFood = async ({
     })
     return insertion
 }
+
+export const updateUserGoal = async ({userId, goalName, goalValue}: {userId: string, goalName: string, goalValue: number}) => {
+    const session = await getAuthSession()
+
+    if (!session?.user) throw new Error('The session is invalid')
+
+    if (session?.user?.id !== userId) throw new Error('The session user is invalid')
+
+    const res = prisma.userGoals.update({
+        where: {
+            userId
+        },
+        data: {
+            [goalName]: goalValue
+        }
+    })
+
+    return res
+}

@@ -3,16 +3,28 @@
 import {cn} from "@/lib/utils";
 import {Progress} from "@/components/ui/progress";
 import GoalDrawer from "./GoalDrawer";
-import { useSelector } from "react-redux";
-import { selectGoal } from "./foodSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectGoal, selectTodayFood, setGoal, setItems } from "./foodSlice";
 import { getTotalCaloriesFromCaloriesFood, getTodayFood, getTotalCaloriesFromNutriments, getTotalNutriments } from "@/lib/food";
+import { useEffect } from "react";
 
-export const FoodCaloriesPanel = ({ userFood, props, className }: any) => {
-    const goal = useSelector(selectGoal)
+export const FoodCaloriesPanel = ({ session, userFood, userGoals, props, className }: any) => {
+    const rGoal = useSelector(selectGoal)
+    const rFood = useSelector(selectTodayFood)
+    const dispatch = useDispatch()
 
+    // Get today food
     const todayFood = getTodayFood(userFood)
-    const nutrimentsFood = [...todayFood.filter((f: any) => f.displayType === 1)]
-    const caloriesFood = [...todayFood.filter((f: any) => f.displayType === 0)]
+    
+    // Dispatch to sync state with DB
+    useEffect(() => {
+        dispatch(setItems(todayFood))
+        dispatch(setGoal(userGoals))
+    }, [])
+
+    // Calc food
+    const nutrimentsFood = [...rFood.filter((f: any) => f.displayType === 1)]
+    const caloriesFood = [...rFood.filter((f: any) => f.displayType === 0)]
     const totalNutriments = getTotalNutriments(nutrimentsFood)
     const totalCalories = getTotalCaloriesFromNutriments(totalNutriments) + getTotalCaloriesFromCaloriesFood(caloriesFood)
 
@@ -20,26 +32,26 @@ export const FoodCaloriesPanel = ({ userFood, props, className }: any) => {
         <div className={'p-3 py-5'}>
             <div className={'flex flex-row items-end justify-between mb-1'}>
                 <h3 className={'text-3xl font-bold mr-4'}>{totalCalories} <span className={'text-sm font-normal text-muted-foreground'}>Kcal</span></h3>
-                <p className={'text-sm font-medium'}><GoalDrawer /> Goal {goal} kcal</p>
+                <p className={'text-sm font-medium'}><GoalDrawer session={session} /> Goal {rGoal.calories} kcal</p>
             </div>
-            <Progress value={(totalCalories/goal)*100} className={'w-full'} />
+            <Progress value={(totalCalories/rGoal.calories)*100} className={'w-full'} />
         </div>
         <div className={'w-full p-3 py-5 bg-black/10 dark:bg-white/5 rounded-b-lg'}>
             <ul className={'grid grid-cols-3 gap-10'}>
                 <li>
                     <h4 className={'font-semibold text-sm'}>Glucides</h4>
-                    <p className={'font-medium text-sm text-foreground/80 mb-1'}>{totalNutriments.carbs} g <span className={'text-muted-foreground'}>/ 250 g</span></p>
-                    <Progress value={(totalNutriments.carbs/25)*100} className={'w-full h-1'} />
+                    <p className={'font-medium text-sm text-foreground/80 mb-1'}>{totalNutriments.carbs} g <span className={'text-muted-foreground'}>/ {rGoal.carbs} g</span></p>
+                    <Progress value={(totalNutriments.carbs/rGoal.carbs)*100} className={'w-full h-1'} />
                 </li>
                 <li>
                     <h4 className={'font-semibold text-sm'}>Lipides</h4>
-                    <p className={'font-medium text-sm text-foreground/80 mb-1'}>{totalNutriments.fat} g <span className={'text-muted-foreground'}>/ 60 g</span></p>
-                    <Progress value={(totalNutriments.fat/60)*100} className={'w-full h-1'} />
+                    <p className={'font-medium text-sm text-foreground/80 mb-1'}>{totalNutriments.fat} g <span className={'text-muted-foreground'}>/ {rGoal.fat} g</span></p>
+                    <Progress value={(totalNutriments.fat/rGoal.fat)*100} className={'w-full h-1'} />
                 </li>
                 <li>
                     <h4 className={'font-semibold text-sm'}>Protéines</h4>
-                    <p className={'font-medium text-sm text-foreground/80 mb-1'}>{totalNutriments.proteins} g <span className={'text-muted-foreground'}>/ 120 g</span></p>
-                    <Progress value={(totalNutriments.proteins/120)*100} className={'w-full h-1'} />
+                    <p className={'font-medium text-sm text-foreground/80 mb-1'}>{totalNutriments.proteins} g <span className={'text-muted-foreground'}>/ {rGoal.proteins} g</span></p>
+                    <Progress value={(totalNutriments.proteins/rGoal.proteins)*100} className={'w-full h-1'} />
                 </li>
             </ul>
         </div>
