@@ -1,14 +1,18 @@
 "use client"
 
 import { Input } from "@/components/ui/input"
-import { Beef, EggFried, Tag, Wheat } from "lucide-react"
+import { Beef, Calculator, EggFried, Tag, Wheat } from "lucide-react"
 import {ChangeEvent, useState} from "react"
 import { Button } from "@/components/ui/button"
 import { Session } from "next-auth"
 import { addFood } from "@/src/actions/food.action"
+import { useToast } from "@/components/ui/use-toast"
 
 export const FoodAdder = ({session}: {session: Session | null}) => {
-    const [nutriments, setNutriments] = useState({carbs: '', fat: '', proteins: ''})
+    const {toast} = useToast()
+
+    const [name, setName] = useState(undefined)
+    const [nutriments, setNutriments] = useState({calories: undefined, carbs: undefined, fat: undefined, proteins: undefined})
 
     const onNutrimentChange = (e: ChangeEvent) => {
         const name = e.target.name;
@@ -27,40 +31,62 @@ export const FoodAdder = ({session}: {session: Session | null}) => {
                 <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
                     <Tag size={16} />
                 </span>
-                <Input placeholder="Nom de l'aliment (optionnel)" id="name" name="name" className="w-full mb-2 pl-8" />
+                <Input placeholder="Nom de l'aliment (optionnel)" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full pl-8" />
             </div>
-            <div className="grid grid-cols-3 gap-2 mb-2">
+            <div className="p-3">
                 <div className="relative">
                     <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
-                        <Wheat size={16} />
+                        <Calculator size={16} />
                     </span>
-                    <Input placeholder="Glucides" id="carbs" name="carbs" className="pl-8" type="number" min={0} max={1000} value={nutriments.carbs} onChange={onNutrimentChange} required />
+                    <Input placeholder="Calories" id="calories" name="calories" type="number" min={0} max={10000}  value={nutriments.calories} onChange={onNutrimentChange} className="w-full pl-8" />
                 </div>
-                <div className="relative">
-                    <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
-                        <EggFried size={16} />
-                    </span>
-                    <Input placeholder="Lipides" id="fat" name="fat" className="pl-8" type="number" min={0} max={1000} value={nutriments.fat} onChange={onNutrimentChange} required />
+                <div className="relative my-1">
+                    <div aria-hidden="true" className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-muted-foreground" />
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-2 bg-background text-muted-foreground">Ou</span>
+                    </div>
                 </div>
-                <div className="relative">
-                    <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
-                        <Beef size={16} />
-                    </span>
-                    <Input placeholder="Protéines" id="proteins" name="proteins" className="pl-8" type="number" min={0} max={1000} value={nutriments.proteins} onChange={onNutrimentChange} required />
+                <div className="grid grid-cols-3 gap-2 mb-2">
+                    <div className="relative">
+                        <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
+                            <Wheat size={16} />
+                        </span>
+                        <Input placeholder="Glucides" id="carbs" name="carbs" className="pl-8" type="number" min={0} max={1000} value={nutriments.carbs} onChange={onNutrimentChange} />
+                    </div>
+                    <div className="relative">
+                        <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
+                            <EggFried size={16} />
+                        </span>
+                        <Input placeholder="Lipides" id="fat" name="fat" className="pl-8" type="number" min={0} max={1000} value={nutriments.fat} onChange={onNutrimentChange} />
+                    </div>
+                    <div className="relative">
+                        <span className="absolute top-0 left-0 bottom-0 h-full p-2 flex items-center justify-center">
+                            <Beef size={16} />
+                        </span>
+                        <Input placeholder="Protéines" id="proteins" name="proteins" className="pl-8" type="number" min={0} max={1000} value={nutriments.proteins} onChange={onNutrimentChange} />
+                    </div>
                 </div>
             </div>
             <Button className="w-full" variant={'secondary'} onClick={async () => {
-                const {carbs,fat,proteins} = nutriments
+                const {calories,carbs,fat,proteins} = nutriments
                 
-                const results = await addFood({
+                const res = await addFood({
                     userId: session?.user?.id,
+                    name,
+                    calories,
                     carbs,
                     fat,
                     proteins
                 })
 
-                console.log(results);
-                
+                console.log(res)
+
+                toast({
+                    title: 'Mise à jour',
+                    description: 'Aliment ajouté avec succès !'
+                })
             }}>
                 Ajouter
             </Button>

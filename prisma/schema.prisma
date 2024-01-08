@@ -63,12 +63,15 @@ model User {
 }
 
 model UserFood {
-  id        String   @id @default(cuid())
-  userId    String
-  carbs     Int      @default(0)
-  fat       Int      @default(0)
-  proteins  Int      @default(0)
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  userId      String
+  name String? @default("__default__")
+  displayType Int      @default(0)
+  calories    Int?     @default(0)
+  carbs       Int?     @default(0)
+  fat         Int?     @default(0)
+  proteins    Int?     @default(0)
+  createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

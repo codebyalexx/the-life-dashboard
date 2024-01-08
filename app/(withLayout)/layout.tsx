@@ -9,6 +9,7 @@ import {Footer} from "@/src/features/layout/Footer";
 import {getAuthSession} from "@/lib/auth";
 import { ReduxStoreProvider } from '@/src/redux/ReduxStoreProvider';
 import {Info} from "lucide-react";
+import { Toaster } from '@/components/ui/toaster';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,6 +44,7 @@ export default async function RootLayout({
                             <Footer />
                         </div>
                         {authmodal}
+                        <Toaster />
                     </ThemeProvider>
                 </ReduxStoreProvider>
             </body>

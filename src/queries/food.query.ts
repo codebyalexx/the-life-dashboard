@@ -15,6 +15,9 @@ export const getFood = async (userId) => {
             userId
         },
         select: {
+            name: true,
+            calories: true,
+            displayType: true,
             carbs: true,
             proteins: true,
             fat: true,

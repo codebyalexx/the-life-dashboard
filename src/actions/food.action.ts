@@ -5,16 +5,20 @@ import { prisma } from "@/lib/prisma";
 
 export type UserFoodSelector = {
     userId: string,
-    carbs: number,
-    fat: number,
-    proteins: number
+    name: string|undefined,
+    calories: number|undefined,
+    carbs: number|undefined,
+    fat: number|undefined,
+    proteins: number|undefined
 }
 
 export const addFood = async ({
     userId,
-    carbs,
-    fat,
-    proteins
+    name=undefined,
+    calories=undefined,
+    carbs=undefined,
+    fat=undefined,
+    proteins=undefined
 }: UserFoodSelector) => {
     const session = await getAuthSession()
 
@@ -25,11 +29,13 @@ export const addFood = async ({
     const insertion = await prisma.userFood.create({
         data: {
             userId,
+            name,
+            calories,
             carbs,
             fat,
-            proteins
+            proteins,
+            displayType: (carbs !== undefined && fat !== undefined && proteins !== undefined) ? 1 : 0
         }
     })
-
     return insertion
 }
