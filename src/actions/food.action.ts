@@ -47,12 +47,29 @@ export const updateUserGoal = async ({userId, goalName, goalValue}: {userId: str
 
     if (session?.user?.id !== userId) throw new Error('The session user is invalid')
 
-    const res = prisma.userGoals.update({
+    const res = await prisma.userGoals.update({
         where: {
             userId
         },
         data: {
             [goalName]: goalValue
+        }
+    })
+
+    return res
+}
+
+export const deleteFood = async({ userId, id}: {userId: string, id: string}) => {
+    const session = await getAuthSession()
+
+    if (!session?.user) throw new Error('The session is invalid')
+
+    if (session?.user?.id !== userId) throw new Error('The session user is invalid')
+
+    const res = await prisma.userFood.delete({
+        where: {
+            userId,
+            id
         }
     })
 

@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { getAuthSession } from "@/lib/auth";
 import { getFood, getGoals } from "@/src/queries/food.query";
 import { FoodLoader } from "@/src/features/layout/food/FoodLoader";
+import { FoodList } from "@/src/features/layout/food/FoodList";
 
 export default async function Food() {
     const session = await getAuthSession()
@@ -28,5 +29,6 @@ export default async function Food() {
         <FoodAdder session={session} />
         <Separator className="my-4" />
         <h3 className="text-lg font-semibold mb-2">Liste des aliments (aujourd&apos;hui)</h3>
+        <FoodList session={session} />
     </div>)
 }

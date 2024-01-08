@@ -47,7 +47,7 @@ export const foodSlice = createSlice({
     }
 })
 
-export const { adjustCaloriesGoal, adjustCarbsGoal, adjustFatGoal, adjustProteinsGoal, setGoal, setItems } = foodSlice.actions
+export const { adjustCaloriesGoal, adjustCarbsGoal, adjustFatGoal, adjustProteinsGoal, setGoal, setItems, addItem, removeItem } = foodSlice.actions
 
 export const selectGoal = (state: StoreType) => state.food.goal
 export const selectCaloriesGoal = (state: StoreType) => state.food.goal.calories
