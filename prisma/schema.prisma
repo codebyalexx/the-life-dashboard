@@ -60,12 +60,23 @@ model User {
   link         String?
   createdAt    DateTime   @default(now())
   foods        UserFood[]
+  goals        UserGoals?
+}
+
+model UserGoals {
+  id       Int    @id @default(autoincrement())
+  calories Int    @default(1800)
+  carbs    Int    @default(250)
+  fat      Int    @default(60)
+  proteins Int    @default(120)
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String @unique
 }
 
 model UserFood {
   id          String   @id @default(cuid())
   userId      String
-  name String? @default("__default__")
+  name        String?  @default("__default__")
   displayType Int      @default(0)
   calories    Int?     @default(0)
   carbs       Int?     @default(0)
