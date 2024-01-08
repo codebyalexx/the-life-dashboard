@@ -3,28 +3,18 @@
 import {cn} from "@/lib/utils";
 import {Progress} from "@/components/ui/progress";
 import GoalDrawer from "./GoalDrawer";
-import { useDispatch, useSelector } from "react-redux";
-import { selectGoal, selectTodayFood, setGoal, setItems } from "./foodSlice";
+import { useSelector } from "react-redux";
+import { selectGoal, selectTodayFood } from "./foodSlice";
 import { getTotalCaloriesFromCaloriesFood, getTodayFood, getTotalCaloriesFromNutriments, getTotalNutriments } from "@/lib/food";
-import { useEffect } from "react";
 
 export const FoodCaloriesPanel = ({ session, userFood, userGoals, props, className }: any) => {
     const rGoal = useSelector(selectGoal)
     const rFood = useSelector(selectTodayFood)
-    const dispatch = useDispatch()
-
-    // Get today food
-    const todayFood = getTodayFood(userFood)
-    
-    // Dispatch to sync state with DB
-    useEffect(() => {
-        dispatch(setItems(todayFood))
-        dispatch(setGoal(userGoals))
-    }, [])
 
     // Calc food
-    const nutrimentsFood = [...rFood.filter((f: any) => f.displayType === 1)]
-    const caloriesFood = [...rFood.filter((f: any) => f.displayType === 0)]
+    const todayFood = getTodayFood(rFood)
+    const nutrimentsFood = [...todayFood.filter((f: any) => f.displayType === 1)]
+    const caloriesFood = [...todayFood.filter((f: any) => f.displayType === 0)]
     const totalNutriments = getTotalNutriments(nutrimentsFood)
     const totalCalories = getTotalCaloriesFromNutriments(totalNutriments) + getTotalCaloriesFromCaloriesFood(caloriesFood)
 
