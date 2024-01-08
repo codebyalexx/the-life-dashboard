@@ -5,16 +5,16 @@ import {Progress} from "@/components/ui/progress";
 import GoalDrawer from "./GoalDrawer";
 import { useSelector } from "react-redux";
 import { selectGoal } from "./foodSlice";
-import { getCaloriesFromNutriments } from "@/lib/nutriments";
-import { getTodayFood, getTotalCalories, getTotalNutriments } from "@/lib/food";
+import { getTotalCaloriesFromCaloriesFood, getTodayFood, getTotalCaloriesFromNutriments, getTotalNutriments } from "@/lib/food";
 
 export const FoodCaloriesPanel = ({ userFood, props, className }: any) => {
     const goal = useSelector(selectGoal)
 
     const todayFood = getTodayFood(userFood)
-    const totalNutriments = getTotalNutriments(todayFood)
-    const totalCalories = getTotalCalories(totalNutriments)
-    
+    const nutrimentsFood = [...todayFood.filter((f: any) => f.displayType === 1)]
+    const caloriesFood = [...todayFood.filter((f: any) => f.displayType === 0)]
+    const totalNutriments = getTotalNutriments(nutrimentsFood)
+    const totalCalories = getTotalCaloriesFromNutriments(totalNutriments) + getTotalCaloriesFromCaloriesFood(caloriesFood)
 
     return (<div {...props} className={cn('rounded-lg bg-black/5 dark:bg-white/15', className)}>
         <div className={'p-3 py-5'}>

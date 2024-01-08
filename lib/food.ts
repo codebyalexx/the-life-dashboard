@@ -14,6 +14,10 @@ export const getTotalNutriments = (userFood: any) => {
     }
 }
 
-export const getTotalCalories = ({ carbs, fat, proteins }: {
+export const getTotalCaloriesFromNutriments = ({ carbs, fat, proteins }: {
     carbs: number, fat: number, proteins: number
 }) => 0 + carbs *4 + fat * 9 + proteins * 4
+
+export const getTotalCaloriesFromCaloriesFood = (userFood: any) => {
+    return userFood.reduce((acc: number, current: any) => acc + current.calories, 0) as number
+}
