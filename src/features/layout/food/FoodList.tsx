@@ -5,7 +5,7 @@ import { removeItem, selectTodayFood } from "./foodSlice"
 import { getTodayFood, getTotalCaloriesFromNutriments } from "@/lib/food"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Beef, Calculator, EggFried, Trash, Trash2, Wheat } from "lucide-react"
+import { Beef, Calculator, EggFried, Frown, Trash, Trash2, Wheat } from "lucide-react"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { useToast } from "@/components/ui/use-toast"
 import { deleteFood } from "@/src/actions/food.action"
@@ -16,7 +16,9 @@ export const FoodList = ({ session }: { session: Session|null }) => {
     const todayFood = getTodayFood(food)
 
     return (<div className="grid grid-cols-2 gap-2">
-        {todayFood.map((foodItem: any) => <FoodCard key={foodItem.id} session={session} foodItem={foodItem} />)}
+        {todayFood.length >= 1 
+            ? todayFood.map((foodItem: any) => <FoodCard key={foodItem.id} session={session} foodItem={foodItem} />)
+            : <p className="w-full col-span-3 text-muted-foreground flex items-center"><Frown size={26} className="mr-2" /> Oups, on dirait que vous n'avez pas encore ajouté d&apos;aliments pour aujourd&apos;hui.</p>}
     </div>)
 }
 

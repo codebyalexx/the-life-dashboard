@@ -14,8 +14,10 @@ export const FoodAdder = ({session}: {session: Session | null}) => {
     const {toast} = useToast()
     const dispatch = useDispatch()
 
+    const defaultNutriments = {calories: undefined, carbs: undefined, fat: undefined, proteins: undefined}
+
     const [name, setName] = useState(undefined)
-    const [nutriments, setNutriments] = useState({calories: undefined, carbs: undefined, fat: undefined, proteins: undefined})
+    const [nutriments, setNutriments] = useState(defaultNutriments)
 
     const onNutrimentChange = (e: ChangeEvent) => {
         const name = e.target.name;
@@ -84,8 +86,9 @@ export const FoodAdder = ({session}: {session: Session | null}) => {
                     proteins
                 })
 
+                setName('')
+                setNutriments({calories: 0, carbs: 0, fat: 0, proteins: 0})
                 dispatch(addItem(res))
-
                 toast({
                     title: 'Mise à jour',
                     description: 'Aliment ajouté avec succès !'
