@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button"
 import { Session } from "next-auth"
 import { addFood } from "@/src/actions/food.action"
 import { useToast } from "@/components/ui/use-toast"
+import { useDispatch } from "react-redux"
+import { addItem } from "./foodSlice"
 
 export const FoodAdder = ({session}: {session: Session | null}) => {
     const {toast} = useToast()
+    const dispatch = useDispatch()
 
     const [name, setName] = useState(undefined)
     const [nutriments, setNutriments] = useState({calories: undefined, carbs: undefined, fat: undefined, proteins: undefined})
@@ -81,7 +84,7 @@ export const FoodAdder = ({session}: {session: Session | null}) => {
                     proteins
                 })
 
-                console.log(res)
+                dispatch(addItem(res))
 
                 toast({
                     title: 'Mise à jour',
