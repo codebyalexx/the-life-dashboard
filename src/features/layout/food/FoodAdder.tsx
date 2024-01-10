@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label"
 export const FoodAdder = ({session}: {session: Session | null}) => {
     const {toast} = useToast()
     const dispatch = useDispatch()
-    const date = useSelector(selectDate)
+    const date = new Date(useSelector(selectDate))
 
     const defaultNutriments = {calories: 0, carbs: 0, fat: 0, proteins: 0}
 
@@ -106,7 +106,10 @@ export const FoodAdder = ({session}: {session: Session | null}) => {
 
                 setName('')
                 setNutriments({calories: 0, carbs: 0, fat: 0, proteins: 0})
-                dispatch(addItem(res))
+                dispatch(addItem({
+                    ...res,
+                    createdAt: new Date(res.createdAt).getTime()
+                }))
                 toast({
                     title: 'Mise à jour',
                     description: 'Aliment ajouté avec succès !'

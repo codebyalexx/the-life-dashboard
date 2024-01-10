@@ -10,7 +10,7 @@ export type StoreType = {
             proteins: number
         },
         items: FoodItem[],
-        date: Date
+        date: number
     }
 }
 

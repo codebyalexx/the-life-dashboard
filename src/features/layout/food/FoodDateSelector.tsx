@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 export const FoodDateSelector = () => {
     const dispatch = useDispatch()
-    const date = useSelector(selectDate)
+    const date = new Date(useSelector(selectDate))
 
     return (<div>
         <h2 className={'text-2xl font-semibold mb-4 flex items-center justify-between'}>

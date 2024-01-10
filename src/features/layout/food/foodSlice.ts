@@ -18,7 +18,7 @@ export const foodSlice = createSlice({
             proteins: 0
         },
         items: [],
-        date: new Date()
+        date: new Date().getTime()
     },
     reducers: {
         adjustCaloriesGoal: (state, action) => {
@@ -37,24 +37,31 @@ export const foodSlice = createSlice({
             state.goal = action.payload
         },
         setItems: (state, action) => {
-            state.items = action.payload
+            state.items = action.payload.map((item: any) => {
+                return {
+                    ...item,
+                    createdAt: new Date(item.createdAt).getTime()
+                }
+            })
         },
         addItem: (state: any, action) => {
-            state.items = [...state.items, {...action.payload}]
+            state.items = [...state.items, {...action.payload, createdAt: new Date(action.payload.createdAt).getTime()}]
         },
         removeItem: (state, action: {payload:string}) => {
             state.items = [...state.items.filter((i: any) => i.id !== action.payload)]
         },
         setDay: (state, action: {payload: Date}) => {
-            state.date === action.payload
+            state.date === action.payload.getTime()
         },
         nextDay: (state) => {
             const day = 60 * 60 * 24 * 1000;
-            state.date = new Date(state.date.getTime() + day)
+            const date = new Date(state.date)
+            state.date = new Date(date.getTime() + day).getTime()
         },
         previousDay: (state) => {
             const day = 60 * 60 * 24 * 1000;
-            state.date = new Date(state.date.getTime() - day)
+            const date = new Date(state.date)
+            state.date = new Date(date.getTime() - day).getTime()
         }
     },
 })

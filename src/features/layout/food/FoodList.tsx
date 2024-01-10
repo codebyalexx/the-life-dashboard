@@ -13,7 +13,7 @@ import { Session } from "next-auth"
 
 export const FoodList = ({ session }: { session: Session|null }) => {
     const food = useSelector(selectTodayFood)
-    const date = useSelector(selectDate)
+    const date = new Date(useSelector(selectDate))
     const todayFood = getFoodOfDay(food, date)
 
     return (<div className="grid grid-cols-2 gap-2">

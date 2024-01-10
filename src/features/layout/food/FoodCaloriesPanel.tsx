@@ -10,7 +10,7 @@ import { getTotalCaloriesFromCaloriesFood, getFoodOfDay, getTotalCaloriesFromNut
 export const FoodCaloriesPanel = ({ session, props, className }: any) => {
     const goals = useSelector(selectGoal)
     const food = useSelector(selectTodayFood)
-    const date = useSelector(selectDate)
+    const date = new Date(useSelector(selectDate))
 
     // Calc food
     const todayFood = getFoodOfDay(food, date)
