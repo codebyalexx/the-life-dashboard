@@ -10,6 +10,7 @@ import {getAuthSession} from "@/lib/auth";
 import { ReduxStoreProvider } from '@/src/redux/ReduxStoreProvider';
 import {Info} from "lucide-react";
 import { Toaster } from '@/components/ui/toaster';
+import { AppContextMenu } from '@/src/features/contextMenu/AppContextMenu';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,20 +32,22 @@ export default async function RootLayout({
             <body className={cn(inter.className, 'bg-background h-full')}>
                 <ReduxStoreProvider>
                     <ThemeProvider attribute={'class'} defaultTheme={'system'} enableSystem>
-                        <div className={'flex flex-col h-full'}>
-                            <Header />
-                            <div className="flex-1 max-w-xl m-auto py-6 w-full">
-                                {session?.user ? children : <div className={'p-3 rounded-lg bg-blue-500 w-fit mx-auto'}>
-                                    <p className={'flex items-center justify-center text-lg font-medium text-white'}>
-                                        <Info size={20} className={'mr-2'} />
-                                        Vous devez vous connecter pour utiliser l&apos;application
-                                    </p>
-                                </div>}
+                        <AppContextMenu>
+                            <div className={'flex flex-col h-full'}>
+                                <Header />
+                                <div className="flex-1 max-w-xl m-auto py-6 w-full">
+                                    {session?.user ? children : <div className={'p-3 rounded-lg bg-blue-500 w-fit mx-auto'}>
+                                        <p className={'flex items-center justify-center text-lg font-medium text-white'}>
+                                            <Info size={20} className={'mr-2'} />
+                                            Vous devez vous connecter pour utiliser l&apos;application
+                                        </p>
+                                    </div>}
+                                </div>
+                                <Footer />
                             </div>
-                            <Footer />
-                        </div>
-                        {authmodal}
-                        <Toaster />
+                            {authmodal}
+                            <Toaster />
+                        </AppContextMenu>
                     </ThemeProvider>
                 </ReduxStoreProvider>
             </body>
