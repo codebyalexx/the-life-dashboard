@@ -28,7 +28,7 @@ export const FoodCard = ({session, foodItem}: {session: Session|null, foodItem: 
         <CardHeader>
             <CardTitle>{foodItem.name}</CardTitle>
             <CardDescription>
-                <p className="flex items-center text-muted-foreground">
+                <span className="flex items-center text-muted-foreground">
                     <Calculator size={16} className="mr-1" /> {foodItem.calories || getTotalCaloriesFromNutriments({
                         carbs: foodItem.carbs,
                         fat: foodItem.fat,
@@ -37,7 +37,7 @@ export const FoodCard = ({session, foodItem}: {session: Session|null, foodItem: 
                     <Wheat size={16} className="mr-1" /> {foodItem.carbs || '?'} <span className="text-foreground mx-1">•</span>
                     <EggFried size={16} className="mr-1" /> {foodItem.fat || '?'} <span className="text-foreground mx-1">•</span>
                     <Beef size={16} className="mr-1" /> {foodItem.proteins || '?'}
-                </p> 
+                </span> 
             </CardDescription>
         </CardHeader>
         <CardFooter>
@@ -51,7 +51,7 @@ export const FoodDeleteDialog = ({ session, foodItem }: {session: Session|null, 
     const dispatch = useDispatch()
 
     return <AlertDialog>
-        <AlertDialogTrigger className="w-full">
+        <AlertDialogTrigger className="w-full" asChild>
             <Button variant={'outline'} className="w-full">
                 <Trash2 size={16} className="mr-2" /> Supprimer
             </Button>
