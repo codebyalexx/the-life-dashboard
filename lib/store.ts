@@ -9,7 +9,8 @@ export type StoreType = {
             fat: number,
             proteins: number
         },
-        items: FoodItem[]
+        items: FoodItem[],
+        date: Date
     }
 }
 

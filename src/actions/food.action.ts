@@ -9,7 +9,8 @@ export type UserFoodSelector = {
     calories: number|undefined,
     carbs: number|undefined,
     fat: number|undefined,
-    proteins: number|undefined
+    proteins: number|undefined,
+    createdAt: Date
 }
 
 export const addFood = async ({
@@ -18,7 +19,8 @@ export const addFood = async ({
     calories=undefined,
     carbs=undefined,
     fat=undefined,
-    proteins=undefined
+    proteins=undefined,
+    createdAt=new Date()
 }: UserFoodSelector) => {
     const session = await getAuthSession()
 
@@ -34,6 +36,7 @@ export const addFood = async ({
             carbs,
             fat,
             proteins,
+            createdAt,
             displayType: (carbs !== undefined && fat !== undefined && proteins !== undefined) ? 1 : 0
         }
     })

@@ -1,8 +1,9 @@
-export const getTodayFood = (userFood: any) => {
+import { isSameDay } from "./date"
+
+export const getFoodOfDay = (userFood: any, date: Date) => {
     return userFood.filter((food: any) => {
-        const todaysDate = new Date();
         const foodDate = new Date(food.createdAt)
-        return foodDate.setHours(0,0,0,0) == todaysDate.setHours(0,0,0,0)
+        return isSameDay(foodDate, date)
     })
 }
 

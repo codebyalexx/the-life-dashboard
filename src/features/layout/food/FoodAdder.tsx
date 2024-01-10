@@ -7,12 +7,13 @@ import { Button } from "@/components/ui/button"
 import { Session } from "next-auth"
 import { addFood } from "@/src/actions/food.action"
 import { useToast } from "@/components/ui/use-toast"
-import { useDispatch } from "react-redux"
-import { addItem } from "./foodSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { addItem, selectDate } from "./foodSlice"
 
 export const FoodAdder = ({session}: {session: Session | null}) => {
     const {toast} = useToast()
     const dispatch = useDispatch()
+    const date = useSelector(selectDate)
 
     const defaultNutriments = {calories: undefined, carbs: undefined, fat: undefined, proteins: undefined}
 
@@ -83,7 +84,8 @@ export const FoodAdder = ({session}: {session: Session | null}) => {
                     calories,
                     carbs,
                     fat,
-                    proteins
+                    proteins,
+                    createdAt: date
                 })
 
                 setName('')

@@ -1,8 +1,8 @@
 "use client"
 
 import { useDispatch, useSelector } from "react-redux"
-import { removeItem, selectTodayFood } from "./foodSlice"
-import { getTodayFood, getTotalCaloriesFromNutriments } from "@/lib/food"
+import { removeItem, selectDate, selectTodayFood } from "./foodSlice"
+import { getFoodOfDay, getTotalCaloriesFromNutriments } from "@/lib/food"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Beef, Calculator, EggFried, Frown, Trash, Trash2, Wheat } from "lucide-react"
@@ -13,7 +13,8 @@ import { Session } from "next-auth"
 
 export const FoodList = ({ session }: { session: Session|null }) => {
     const food = useSelector(selectTodayFood)
-    const todayFood = getTodayFood(food)
+    const date = useSelector(selectDate)
+    const todayFood = getFoodOfDay(food, date)
 
     return (<div className="grid grid-cols-2 gap-2">
         {todayFood.length >= 1 

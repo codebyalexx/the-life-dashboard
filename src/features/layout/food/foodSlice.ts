@@ -17,7 +17,8 @@ export const foodSlice = createSlice({
             fat: 0,
             proteins: 0
         },
-        items: []
+        items: [],
+        date: new Date()
     },
     reducers: {
         adjustCaloriesGoal: (state, action) => {
@@ -43,11 +44,22 @@ export const foodSlice = createSlice({
         },
         removeItem: (state, action: {payload:string}) => {
             state.items = [...state.items.filter((i: any) => i.id !== action.payload)]
+        },
+        setDay: (state, action: {payload: Date}) => {
+            state.date === action.payload
+        },
+        nextDay: (state) => {
+            const day = 60 * 60 * 24 * 1000;
+            state.date = new Date(state.date.getTime() + day)
+        },
+        previousDay: (state) => {
+            const day = 60 * 60 * 24 * 1000;
+            state.date = new Date(state.date.getTime() - day)
         }
-    }
+    },
 })
 
-export const { adjustCaloriesGoal, adjustCarbsGoal, adjustFatGoal, adjustProteinsGoal, setGoal, setItems, addItem, removeItem } = foodSlice.actions
+export const { adjustCaloriesGoal, adjustCarbsGoal, adjustFatGoal, adjustProteinsGoal, setGoal, setItems, addItem, removeItem, setDay, nextDay, previousDay } = foodSlice.actions
 
 export const selectGoal = (state: StoreType) => state.food.goal
 export const selectCaloriesGoal = (state: StoreType) => state.food.goal.calories
@@ -55,3 +67,4 @@ export const selectCarbsGoal = (state: StoreType) => state.food.goal.carbs
 export const selectFatGoal = (state: StoreType) => state.food.goal.fat
 export const selectProteinsGoal = (state: StoreType) => state.food.goal.proteins
 export const selectTodayFood = (state: StoreType) => state.food.items
+export const selectDate = (state: StoreType) => state.food.date
