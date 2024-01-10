@@ -14,7 +14,7 @@ export const frenchMonth = [
 ]
 
 export const isSameDay = (dateOne: Date, dateTwo: Date) => {
-    return dateOne.setHours(0,0,0,0) === dateTwo.setHours(0,0,0,0)
+    return dateOne.setHours(0,0,0,0) == dateTwo.setHours(0,0,0,0)
 }
 
 export const getDateLabel = (date: Date) => {

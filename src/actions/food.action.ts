@@ -5,21 +5,21 @@ import { prisma } from "@/lib/prisma";
 
 export type UserFoodSelector = {
     userId: string,
-    name: string|undefined,
-    calories: number|undefined,
-    carbs: number|undefined,
-    fat: number|undefined,
-    proteins: number|undefined,
+    name: string,
+    calories: number,
+    carbs: number,
+    fat: number,
+    proteins: number,
     createdAt: Date
 }
 
 export const addFood = async ({
     userId,
-    name=undefined,
-    calories=undefined,
-    carbs=undefined,
-    fat=undefined,
-    proteins=undefined,
+    name='Unnamed',
+    calories=0,
+    carbs=0,
+    fat=0,
+    proteins=0,
     createdAt=new Date()
 }: UserFoodSelector) => {
     const session = await getAuthSession()
@@ -37,7 +37,7 @@ export const addFood = async ({
             fat,
             proteins,
             createdAt,
-            displayType: (carbs !== undefined && fat !== undefined && proteins !== undefined) ? 1 : 0
+            displayType: (calories > 0) ? 0 : 1
         }
     })
     return insertion
