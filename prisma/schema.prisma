@@ -54,13 +54,40 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  caloriesGoal Int        @default(1800)
+  caloriesGoal Int         @default(1800)
   username     String?
   bio          String?
   link         String?
-  createdAt    DateTime   @default(now())
+  createdAt    DateTime    @default(now())
   foods        UserFood[]
   goals        UserGoals?
+  habits       UserHabit[]
+}
+
+model UserHabit {
+  id         String  @id @default(cuid())
+  categoryId String? @default("Default")
+
+  name         String @default("Default")
+  repeatSchema String @default("Daily")
+  moment       String @default("AllDay")
+  doneDays UserHabitDay[]
+
+  createdAt DateTime  @default(now())
+  startAt   DateTime  @default(now())
+  endsAt    DateTime?
+
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String        @unique
+}
+
+model UserHabitDay {
+  id String @id @default(cuid())
+
+  date String @default("01011970")
+
+  habit   UserHabit @relation(fields: [habitId], references: [id])
+  habitId String    @unique
 }
 
 model UserGoals {
@@ -76,7 +103,7 @@ model UserGoals {
 model UserFood {
   id          String   @id @default(cuid())
   userId      String
-  name        String?  @default("__default__")
+  name        String?  @default("Default")
   displayType Int      @default(0)
   calories    Int?     @default(0)
   carbs       Int?     @default(0)
