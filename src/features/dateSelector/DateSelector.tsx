@@ -1,12 +1,12 @@
 "use client"
 
+import { useDispatch, useSelector } from "react-redux"
+import { nextDay, previousDay, selectDate } from "./dateSlice"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { frenchMonth, getDateLabel } from "@/lib/date"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { nextDay, previousDay, selectDate } from "./foodSlice"
-import { useDispatch, useSelector } from "react-redux"
 
-export const FoodDateSelector = () => {
+export const DateSelector = () => {
     const dispatch = useDispatch()
     const date = new Date(useSelector(selectDate))
 

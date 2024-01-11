@@ -4,8 +4,9 @@ import {cn} from "@/lib/utils";
 import {Progress} from "@/components/ui/progress";
 import GoalDrawer from "./GoalDrawer";
 import { useSelector } from "react-redux";
-import { selectDate, selectGoal, selectTodayFood } from "./foodSlice";
+import { selectGoal, selectTodayFood } from "./foodSlice";
 import { getTotalCaloriesFromCaloriesFood, getFoodOfDay, getTotalCaloriesFromNutriments, getTotalNutriments } from "@/lib/food";
+import { selectDate } from "../../dateSelector/dateSlice";
 
 export const FoodCaloriesPanel = ({ session, props, className }: any) => {
     const goals = useSelector(selectGoal)

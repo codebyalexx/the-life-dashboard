@@ -8,8 +8,9 @@ import { Session } from "next-auth"
 import { addFood } from "@/src/actions/food.action"
 import { useToast } from "@/components/ui/use-toast"
 import { useDispatch, useSelector } from "react-redux"
-import { addItem, selectDate } from "./foodSlice"
+import { addItem } from "./foodSlice"
 import { Label } from "@/components/ui/label"
+import { selectDate } from '../../dateSelector/dateSlice';
 
 export const FoodAdder = ({session}: {session: Session | null}) => {
     const {toast} = useToast()

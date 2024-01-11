@@ -1,7 +1,7 @@
 "use client"
 
 import { useDispatch, useSelector } from "react-redux"
-import { removeItem, selectDate, selectTodayFood } from "./foodSlice"
+import { removeItem, selectTodayFood } from "./foodSlice"
 import { getFoodOfDay, getTotalCaloriesFromNutriments } from "@/lib/food"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -10,6 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { useToast } from "@/components/ui/use-toast"
 import { deleteFood } from "@/src/actions/food.action"
 import { Session } from "next-auth"
+import { selectDate } from "../../dateSelector/dateSlice"
 
 export const FoodList = ({ session }: { session: Session|null }) => {
     const food = useSelector(selectTodayFood)
