@@ -16,21 +16,21 @@ export const Footer = () => {
             }), 'flex-1')}>
                 <ClipboardCheck size={20} />
             </Link>
-            <Link href={'/calendar'} className={cn(buttonVariants({
+            {/*<Link href={'/calendar'} className={cn(buttonVariants({
                 variant: 'ghost'
             }), 'flex-1')}>
                 <Calendar size={20} />
-            </Link>
+        </Link>*/}
             <Link href={'/food'} className={cn(buttonVariants({
                 variant: 'ghost'
             }), 'flex-1')}>
                 <Salad size={20} />
             </Link>
-            <Link href={'/health'} className={cn(buttonVariants({
+            {/*<Link href={'/health'} className={cn(buttonVariants({
                 variant: 'ghost'
             }), 'flex-1')}>
                 <HeartPulse size={20} />
-            </Link>
+        </Link>*/}
         </footer>
     )
 }
