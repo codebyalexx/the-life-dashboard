@@ -10,18 +10,18 @@ import { signIn } from "next-auth/react"
 export const AuthForm = () => {
   return (
     <>
-    <h2 className="text-2xl font-bold mb-10 text-center">Sign In</h2>
+    <h2 className="text-2xl font-bold mb-10 text-center">Connexion</h2>
         <form className="space-y-6">
           <div className="space-y-1">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" placeholder="Enter your email" required type="email" />
+            <Label htmlFor="email">Adresse email</Label>
+            <Input id="email" placeholder="Indiquez votre adresse email" required type="email" />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" placeholder="Enter your password" required type="password" />
+            <Label htmlFor="password">Mot de passe</Label>
+            <Input id="password" placeholder="Indiquez votre mot de passe" required type="password" />
           </div>
           <Button className="w-full" type="submit">
-            Sign In
+            Se connecter
           </Button>
         </form>
         <div className="mt-6">
@@ -30,7 +30,7 @@ export const AuthForm = () => {
               <div className="w-full border-t border-muted-foreground" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-background text-muted-foreground">Or continue with</span>
+              <span className="px-2 bg-background text-muted-foreground">Ou continuer avec</span>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
