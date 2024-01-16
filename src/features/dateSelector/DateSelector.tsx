@@ -6,11 +6,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { frenchMonth, getDateLabel } from "@/lib/date"
 
-export const DateSelector = () => {
+export const DateSelector = ({ className }: {className?: string}) => {
     const dispatch = useDispatch()
     const date = new Date(useSelector(selectDate))
 
-    return (<div>
+    return (<div className={className}>
         <h2 className={'text-2xl font-semibold mb-4 flex items-center justify-between'}>
             <Button variant={'ghost'} onClick={() => {
                 dispatch(previousDay())
