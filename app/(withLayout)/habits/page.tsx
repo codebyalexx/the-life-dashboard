@@ -4,6 +4,7 @@ import { getAuthSession } from "@/lib/auth";
 import { getHabits } from "@/src/queries/habit.query";
 import { HabitsAdder } from "@/src/features/layout/habits/HabitsAdder";
 import { Separator } from "@/components/ui/separator";
+import { HabitsLoader } from "@/src/features/layout/habits/HabitsLoader";
 
 export default async function Habits() {
     const session = await getAuthSession()
@@ -12,6 +13,7 @@ export default async function Habits() {
     })
 
     return (<div>
+        <HabitsLoader userHabits={habits} />
         <DateSelector className="mb-4" />
         <HabitsList habits={habits} className="mb-4" />
         <Separator className="mb-4" />

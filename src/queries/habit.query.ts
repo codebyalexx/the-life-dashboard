@@ -15,6 +15,21 @@ export const getHabits = async ({
     const select = await prisma.userHabit.findMany({
         where: {
             userId
+        },
+        select: {
+            id: true,
+            name: true,
+            repeatSchema: true,
+            createdAt: true,
+            startAt: true,
+            endsAt: true,
+            doneDays: {
+                select: {
+                    id: true,
+                    date: true,
+                    habitId: true
+                }
+            },
         }
     })
 

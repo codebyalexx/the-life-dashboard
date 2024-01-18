@@ -1,5 +1,6 @@
 import { dateSlice } from "@/src/features/dateSelector/dateSlice"
 import { FoodItem, foodSlice } from "@/src/features/layout/food/foodSlice"
+import { HabitItem, habitsSlice } from "@/src/features/layout/habits/habitsSlice"
 import { configureStore } from "@reduxjs/toolkit"
 
 export type StoreType = {
@@ -12,12 +13,16 @@ export type StoreType = {
         },
         items: FoodItem[],
     },
-    date: number
+    date: number,
+    habits: {
+        items: HabitItem[]
+    }
 }
 
 export const store = configureStore({
     reducer: {
         food: foodSlice.reducer,
-        date: dateSlice.reducer
+        date: dateSlice.reducer,
+        habits: habitsSlice.reducer
     }
 })
