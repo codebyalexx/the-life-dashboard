@@ -4,8 +4,11 @@ import { cn } from "@/lib/utils"
 import { useSelector } from "react-redux"
 import { selectDate } from "../../dateSelector/dateSlice"
 import { getHabitOfDay } from "@/lib/habits"
-import { MouseEventHandler, useState } from "react"
+import {  useState } from "react"
 import { Check } from "lucide-react"
+import useSound from "use-sound"
+import yipee from "@/public/yipee.mp3"
+import skip from "@/public/skip.mp3"
 
 export const HabitsList = ({ habits, className }: {habits: any, className?: string}) => {
     const date = new Date(useSelector(selectDate))
@@ -18,6 +21,9 @@ export const HabitsList = ({ habits, className }: {habits: any, className?: stri
 }
 
 export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
+    const [playYipee] = useSound(yipee)
+    const [playSkip] = useSound(skip)
+
     const [active, setActive] = useState(false)
     const [skipped, setSkipped] = useState(false)
     const [validated, setValidated] = useState(false)
@@ -25,10 +31,12 @@ export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
     const onValidate = () => {
         setActive(false)
         setValidated(true)
+        playYipee()
     }
     const onSkip = () => {
         setActive(false)
         setSkipped(true)
+        playSkip()
     }
     const onUndo = () => {
         setActive(false)
