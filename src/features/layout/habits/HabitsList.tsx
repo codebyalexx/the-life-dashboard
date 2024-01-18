@@ -7,12 +7,12 @@ import { getHabitOfDay } from "@/lib/habits"
 import { MouseEventHandler, useState } from "react"
 import { Check } from "lucide-react"
 
-export const HabitsList = ({ habits }: {habits: any}) => {
+export const HabitsList = ({ habits, className }: {habits: any, className?: string}) => {
     const date = new Date(useSelector(selectDate))
 
     const selectedDayHabits = getHabitOfDay(habits, date)
 
-    return (<ul>
+    return (<ul className={className}>
         {selectedDayHabits.map((habit: any) => <HabitElement habit={habit} key={habit.id} />)}
     </ul>)
 }
