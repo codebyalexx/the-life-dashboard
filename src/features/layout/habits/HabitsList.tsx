@@ -5,18 +5,23 @@ import { useSelector } from "react-redux"
 import { selectDate } from "../../dateSelector/dateSlice"
 import { getHabitOfDay } from "@/lib/habits"
 import {  useState } from "react"
-import { Check } from "lucide-react"
+import { Check, Info } from "lucide-react"
 import useSound from "use-sound"
 import yipee from "@/public/yipee.mp3"
 import skip from "@/public/skip.mp3"
+import { selectHabits } from "./habitsSlice"
 
-export const HabitsList = ({ habits, className }: {habits: any, className?: string}) => {
+export const HabitsList = ({ className }: {className?: string}) => {
+    const habits = useSelector(selectHabits)
+
     const date = new Date(useSelector(selectDate))
 
     const selectedDayHabits = getHabitOfDay(habits, date)
 
     return (<ul className={className}>
-        {selectedDayHabits.map((habit: any) => <HabitElement habit={habit} key={habit.id} />)}
+        {selectedDayHabits.length > 0 ? selectedDayHabits.map((habit: any) => <HabitElement habit={habit} key={habit.id} />) : <li className="w-full">
+            <p className="text-foreground font-semibold text-center px-8 flex flex-col items-center justify-center"><Info className="mb-2 text-blue-500" /> On dirait bien que vous n&apos;avez pas d&apos;habitudes à réaliser aujourd&apos;hui !</p>
+        </li>}
     </ul>)
 }
 
@@ -44,7 +49,7 @@ export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
         if (skipped) setSkipped(false)
     }
 
-    return (<div className="relative w-full h-14">
+    return (<div className="relative w-full h-14 mb-2">
         <div className={cn(
             "absolute left-0 top-0 bottom-0 w-14 bg-green-600 text-white flex items-center justify-center rounded-lg cursor-pointer opacity-0 scale-0 transition-all delay-75",
             (active && !validated && !skipped) ? "opacity-100 scale-100" : ""
@@ -53,7 +58,7 @@ export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
         </div>
 
         <div className={cn(
-            "bg-gray-800 absolute left-0 top-0 bottom-0 right-0 rounded-lg cursor-pointer flex flex-wrap items-center justify-start pl-3 font-bold transition-all delay-75",
+            "bg-black/90 text-white dark:bg-white/10 absolute left-0 top-0 bottom-0 right-0 rounded-lg cursor-pointer flex flex-wrap items-center justify-start pl-3 font-bold transition-all delay-75",
             active ? "right-28" : "",
             (active && !validated && !skipped) ? "left-16 right-28": "",
             (skipped || validated) ? "opacity-50" : ""

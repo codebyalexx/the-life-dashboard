@@ -18,19 +18,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Tag } from "lucide-react";
+import { CalendarIcon, ShieldAlert, Tag } from "lucide-react";
+import { Session } from "next-auth";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addHabit } from '../../../actions/habit.action';
+import { addItem } from "./habitsSlice";
 
-export const HabitsAdder = ({ className }: { className?: String }) => {
+export const HabitsAdder = ({ className, session }: { className?: String, session: Session | null }) => {
+  const dispatch = useDispatch()
+  const {toast} = useToast()
+  
   const [name, setName] = useState('')
   const [repeat, setRepeat] = useState('Daily')
   const [start, setStart] = useState()
   const [end, setEnd] = useState()
+  const [error, setError] = useState('')
 
   return (
-    <form className={cn("", className)}>
+    <form className={cn("", className)} onSubmit={(e) => e.preventDefault()}>
       <h3 className="text-lg font-semibold mb-2">Ajouter une habitude</h3>
       <div className="mb-4 grid grid-cols-2 gap-4">
         <div>
@@ -70,7 +79,42 @@ export const HabitsAdder = ({ className }: { className?: String }) => {
           <HabitDateSelector date={end} setDate={setEnd} label="Indéterminée" />
         </div>
       </div>
-      <Button className="w-full" variant={"secondary"} onClick={async () => {}}>
+      {error ? <p className="w-full text-red-500 font-medium my-2 flex items-center justify-center"><ShieldAlert className="mr-2" /> {error}</p> : ""}
+      <Button className="w-full" variant={"secondary"} onClick={async () => {
+        setError('')
+        let err = ''
+
+        if (name.length === 0) 
+          err = 'Merci de remplir la champ "nom"'
+
+        if (((end|| 1) < (start || 0)) || (end ? (end > Date.now()) : false)) 
+          err = 'La date de début doit être antérieure à celle de fin ou à aujourd\'hui'
+
+        setError(err)
+
+        if (err.length > 0) return
+
+        const habit = await addHabit({
+          userId: session?.user?.id,
+          name,
+          repeatSchema: repeat,
+          moment: 'AllDay',
+          startAt: start,
+          endsAt: end
+        })
+
+        dispatch(addItem({
+          ...habit,
+          createdAt: new Date(habit.createdAt).getTime(),
+          startAt: new Date(habit.startAt).getTime(),
+          endsAt: new Date(habit.endsAt as Date).getTime()
+        }))
+
+        toast({
+          title: 'Mise à jour',
+          description: 'Aliment ajouté avec succès !'
+        })
+      }}>
         Ajouter
       </Button>
     </form>

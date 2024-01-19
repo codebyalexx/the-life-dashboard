@@ -8,8 +8,9 @@ type HabitsParameters = {
     name: string|undefined,
     repeatSchema: string|undefined,
     moment: string|undefined,
-    startAt: Date|undefined,
-    endsAt: Date|undefined
+    createdAt?: number|Date,
+    startAt: number|Date|undefined,
+    endsAt: number|Date|undefined
 }
 
 export const addHabit = async ({
@@ -25,6 +26,9 @@ export const addHabit = async ({
     if (!session?.user) throw new Error('The session is invalid')
 
     if (session?.user?.id !== userId) throw new Error('The session user is invalid')
+
+    console.log(userId, name, repeatSchema, moment, startAt, endsAt);
+    
 
     const insertion = await prisma.userHabit.create({
         data: {

@@ -15,8 +15,8 @@ export default async function Habits() {
     return (<div>
         <HabitsLoader userHabits={habits} />
         <DateSelector className="mb-4" />
-        <HabitsList habits={habits} className="mb-4" />
+        <HabitsList className="mb-4" />
         <Separator className="mb-4" />
-        <HabitsAdder className="mb-4" />
+        <HabitsAdder session={session} className="mb-4" />
     </div>)
 }
