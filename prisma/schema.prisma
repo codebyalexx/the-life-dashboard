@@ -87,7 +87,7 @@ model UserHabitDay {
   date String @default("01011970")
 
   habit   UserHabit @relation(fields: [habitId], references: [id])
-  habitId String    @unique
+  habitId String 
 }
 
 model UserGoals {

@@ -38,10 +38,55 @@ export const addHabit = async ({
             moment,
             startAt,
             endsAt
+        },
+        select: {
+            id: true,
+            name: true,
+            repeatSchema: true,
+            createdAt: true,
+            startAt: true,
+            endsAt: true,
+            doneDays: {
+                select: {
+                    id: true,
+                    date: true,
+                    habitId: true
+                }
+            },
         }
     })
 
     return insertion
+}
+
+export const toggleDoneDayString = async ({
+    habitId,
+    toggleString
+}: {habitId: string, toggleString: string}) => {
+    const find = await prisma.userHabitDay.findMany({
+        where: {
+            habitId,
+            date: toggleString
+        }
+    })
+
+    if (find.length > 0) {
+        await prisma.userHabitDay.deleteMany({
+            where: {
+                habitId,
+                date: toggleString
+            }
+        })
+        return false
+    }
+
+    await prisma.userHabitDay.create({
+        data: {
+            habitId,
+            date: toggleString
+        }
+    })
+    return true
 }
 
 export const deleteHabit = async ({
