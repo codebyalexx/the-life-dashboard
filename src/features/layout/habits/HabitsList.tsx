@@ -3,24 +3,24 @@
 import { cn } from "@/lib/utils"
 import { useDispatch, useSelector } from "react-redux"
 import { selectDate } from "../../dateSelector/dateSlice"
-import { getHabitOfDay } from "@/lib/habits"
-import {  useState } from "react"
+import { getHabitOfDay, mapHabits } from "@/lib/habits"
+import { useState } from "react"
 import { Check, Info } from "lucide-react"
 import useSound from "use-sound"
 import yipee from "@/public/yipee.mp3"
 import skip from "@/public/skip.mp3"
-import { selectHabits, toggleHabitSkipped, toggleHabitValidated } from "./habitsSlice"
+import { selectHabits, toggleHabitString } from "./habitsSlice"
 import { toggleDoneDayString } from "@/src/actions/habit.action"
 
 export const HabitsList = ({ className }: {className?: string}) => {
     const habits = useSelector(selectHabits)
-
     const date = new Date(useSelector(selectDate))
 
-    const selectedDayHabits = getHabitOfDay(habits, date)
+    let selectedDayHabits = getHabitOfDay(habits, date)
+    let mappedDayHabits = mapHabits(selectedDayHabits, date)
 
     return (<ul className={className}>
-        {selectedDayHabits.length > 0 ? selectedDayHabits.sort((a, b) => a.validated - b.validated).sort((a, b) => a.skipped - b.skipped).map((habit: any) => <HabitElement habit={habit} key={habit.id} />) : <li className="w-full">
+        {mappedDayHabits.length > 0 ? mappedDayHabits.sort((a, b) => a.validated - b.validated).sort((a, b) => a.skipped - b.skipped).map((habit: any) => <HabitElement habit={habit} key={habit.id} />) : <li className="w-full">
             <p className="text-foreground font-semibold text-center px-8 flex flex-col items-center justify-center"><Info className="mb-2 text-blue-500" /> On dirait bien que vous n&apos;avez pas d&apos;habitudes à réaliser aujourd&apos;hui !</p>
         </li>}
     </ul>)
@@ -28,6 +28,8 @@ export const HabitsList = ({ className }: {className?: string}) => {
 
 export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
     const dispatch = useDispatch()
+    const dateAsNumber = useSelector(selectDate)
+    const date = new Date(dateAsNumber)
     const [playYipee] = useSound(yipee)
     const [playSkip] = useSound(skip)
 
@@ -39,10 +41,14 @@ export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
             "absolute left-0 top-0 bottom-0 w-14 bg-green-600 text-white flex items-center justify-center rounded-lg cursor-pointer opacity-0 scale-0 transition-all delay-75",
             (active && !validated && !skipped) ? "opacity-100 scale-100" : ""
         )} onClick={async () => {
-            dispatch(toggleHabitValidated(habit.id))
+            console.log(date, dateAsNumber);
+            dispatch(toggleHabitString({
+                str: `v${(date.setHours(0,0,0,0).toFixed())}`,
+                habitId: habit.id
+            }))
             await toggleDoneDayString({
                 habitId: habit.id,
-                toggleString: `v${(new Date().setHours(0,0,0,0))}`
+                toggleString: `v${(date.setHours(0,0,0,0).toFixed())}`
             })
             setActive(false)
             playYipee()
@@ -81,17 +87,23 @@ export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
                 if (validated) {
                     await toggleDoneDayString({
                         habitId: habit.id,
-                        toggleString: `v${(new Date().setHours(0,0,0,0))}`
+                        toggleString: `v${(date.setHours(0,0,0,0).toFixed())}`
                     })
-                    dispatch(toggleHabitValidated(habit.id))
+                    dispatch(toggleHabitString({
+                        str: `v${(date.setHours(0,0,0,0).toFixed())}`,
+                        habitId: habit.id
+                    }))
                 }
 
                 if (skipped) {
                     await toggleDoneDayString({
                         habitId: habit.id,
-                        toggleString: `s${(new Date().setHours(0,0,0,0))}`
+                        toggleString: `s${(date.setHours(0,0,0,0).toFixed())}`
                     })
-                    dispatch(toggleHabitSkipped(habit.id))
+                    dispatch(toggleHabitString({
+                        str: `s${(date.setHours(0,0,0,0).toFixed())}`,
+                        habitId: habit.id
+                    }))
                 }
             }}>
                 Annuler
@@ -99,10 +111,13 @@ export const HabitElement = ({ habit, props }: {habit:any, props?: any}) => {
                 "w-24 h-full bg-blue-600 text-white flex items-center justify-center rounded-lg cursor-pointer opacity-0 scale-0 transition-all delay-75",
                 active ? "opacity-100 scale-100" : ""
             )} onClick={async () => {
-                dispatch(toggleHabitSkipped(habit.id))
+                dispatch(toggleHabitString({
+                    str: `s${(date.setHours(0,0,0,0).toFixed())}`,
+                    habitId: habit.id
+                }))
                 await toggleDoneDayString({
                     habitId: habit.id,
-                    toggleString: `s${(new Date().setHours(0,0,0,0))}`
+                    toggleString: `s${(date.setHours(0,0,0,0).toFixed())}`
                 })
                 setActive(false)
                 playSkip()

@@ -1,4 +1,3 @@
-import { mapHabits } from "@/lib/habits";
 import { StoreType } from "@/lib/store";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -33,50 +32,31 @@ export const habitsSlice = createSlice({
                     endsAt: new Date(item.createdAt).getTime()
                 }
             })
-            state.items = mapHabits(parsedHabits)
+            state.items = parsedHabits
         },
         addItem: (state: any, action) => {
             const parsedItem = {...action.payload, createdAt: new Date(action.payload.createdAt).getTime()}
-            const mappedItem = mapHabits([
-                {
-                    ...parsedItem
-                }
-            ])[0]
-            state.items = [...state.items, mappedItem]
+            state.items = [...state.items, parsedItem]
         },
-        removeItem: (state, action: {payload:string}) => {
+        removeItem: (state: any, action: {payload:string}) => {
             state.items = [...state.items.filter((i: any) => i.id !== action.payload)]
         },
-        toggleHabitValidated: (state, action: {payload: string}) => {
-            state.items = [...state.items.map((i: any) => {
-                const newValidated = !i.validated
-                if (i.id === action.payload) return {
-                    ...i,
-                    validated: newValidated,
-                    doneDays: newValidated 
-                        ? [...i.doneDays, `v${(new Date().setHours(0,0,0,0))}`] 
-                        : [...i.doneDays.filter((x: any) => x !== `v${(new Date().setHours(0,0,0,0))}`)]
+        toggleHabitString: (state: any, action: {payload: {habitId: string, str: string}}) => {
+            state.items = state.items.map((i: any) => {
+                if (i.id === action.payload.habitId) {
+                    return {
+                        ...i,
+                        doneDays: i.doneDays.some((x: any) => x.date === action.payload.str) 
+                            ? i.doneDays.filter((x: any) => x.date !== action.payload.str) 
+                            : [...i.doneDays, {id: 'blblbl', habitId: i.id, date: action.payload.str}] 
+                    }
                 }
                 return i
-            })]
-        },
-        toggleHabitSkipped: (state, action: {payload: string}) => {
-            state.items = [...state.items.map((i: any) => {
-                const newSkipped = !i.skipped
-                if (i.id === action.payload) return {
-                    ...i,
-                    skipped: newSkipped,
-                    doneDays: newSkipped 
-                        ? [...i.doneDays, `s${(new Date().setHours(0,0,0,0))}`] 
-                        : [...i.doneDays.filter((x: any) => x !== `s${(new Date().setHours(0,0,0,0))}`)]
-                }
-                return i
-            })]
-            
+            })
         }
     }
 })
 
-export const {setItems, addItem, removeItem, toggleHabitSkipped, toggleHabitValidated} = habitsSlice.actions
+export const {setItems, addItem, removeItem, toggleHabitString} = habitsSlice.actions
 
 export const selectHabits = (state: StoreType) => state.habits.items
