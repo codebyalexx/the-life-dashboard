@@ -26,7 +26,7 @@ import useSound from "use-sound"
 import { selectDate } from "../../dateSelector/dateSlice"
 import { removeItem, selectHabits, toggleHabitString } from "./habitsSlice"
 
-export const HabitsList = ({ className, session }: {className?: string, session: Session}) => {
+export const HabitsList = ({ className, session }: {className?: string, session: Session|null}) => {
     const habits = useSelector(selectHabits)
     const date = new Date(useSelector(selectDate))
 
@@ -40,7 +40,7 @@ export const HabitsList = ({ className, session }: {className?: string, session:
     </ul>)
 }
 
-export const HabitElement = ({ habit, session }: {habit:any, session: Session}) => {
+export const HabitElement = ({ habit, session }: {habit:any, session: Session|null}) => {
     const dispatch = useDispatch()
     const dateAsNumber = useSelector(selectDate)
     const date = new Date(dateAsNumber)
@@ -143,7 +143,7 @@ export const HabitElement = ({ habit, session }: {habit:any, session: Session}) 
     </div>)
 }
 
-export const HabitRemover = ({ habit, className, session }: {habit: any, className?: string, session: Session }) => {
+export const HabitRemover = ({ habit, className, session }: {habit: any, className?: string, session: Session|null }) => {
     const dispatch = useDispatch()
     const {toast} = useToast()
     
