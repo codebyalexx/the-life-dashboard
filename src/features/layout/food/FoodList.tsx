@@ -20,7 +20,7 @@ export const FoodList = ({ session }: { session: Session|null }) => {
     return (<div className="grid grid-cols-2 gap-2">
         {todayFood.length >= 1 
             ? todayFood.map((foodItem: any) => <FoodCard key={foodItem.id} session={session} foodItem={foodItem} />)
-            : <p className="flex items-center w-full col-span-3 text-muted-foreground"><Frown size={26} className="mr-2" /> Oups, on dirait que vous n'avez pas encore ajouté d&apos;aliments pour aujourd&apos;hui.</p>}
+            : <p className="flex items-center w-full col-span-3 text-muted-foreground"><Frown size={26} className="mr-2" /> Oups, on dirait que vous n&apos;avez pas encore ajouté d&apos;aliments pour aujourd&apos;hui.</p>}
     </div>)
 }
 

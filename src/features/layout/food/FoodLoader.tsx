@@ -14,6 +14,6 @@ export const FoodLoader = ({ userFood, userGoals }: {userFood: any, userGoals: a
             }
         })))
         dispatch(setGoal(userGoals))
-    }, [])
+    }, [dispatch, userFood, userGoals])
     return null
 }

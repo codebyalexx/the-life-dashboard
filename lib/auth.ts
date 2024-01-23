@@ -42,6 +42,7 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/auth",
   },
+  secret: env.JWT_SECRET,
 };
 
 export const getAuthSession = async () => await getServerSession(authOptions);
