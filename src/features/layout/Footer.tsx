@@ -1,11 +1,11 @@
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ClipboardCheck, Home, Salad } from "lucide-react";
 import Link from "next/link";
-import {Calendar, CalendarCheck, ClipboardCheck, HeartPulse, Home, Salad, User} from "lucide-react";
-import {cn} from "@/lib/utils";
-import {buttonVariants} from "@/components/ui/button";
 
 export const Footer = () => {
     return (
-        <footer className={'py-4 flex justify-between items-center container gap-1 bottom-0 left-0 right-0 bg-background max-w-2xl z-20 m-auto border-t border-accent'}>
+        <footer className={'fixed py-2 flex justify-between items-center container gap-1 bottom-0 left-0 right-0 bg-background max-w-2xl z-20 m-auto border-t border-accent'}>
             <Link href={'/'} className={cn(buttonVariants({
                 variant: 'ghost'
             }), 'flex-1')}>

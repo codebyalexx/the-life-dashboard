@@ -1,16 +1,16 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import '@/app/index.css'
-import {ThemeProvider} from "@/src/theme/ThemeProvider";
-import {cn} from "@/lib/utils";
-import React from "react";
-import {Header} from "@/src/features/layout/Header";
-import {Footer} from "@/src/features/layout/Footer";
-import {getAuthSession} from "@/lib/auth";
-import { ReduxStoreProvider } from '@/src/redux/ReduxStoreProvider';
-import {Info} from "lucide-react";
+import '@/app/index.css';
 import { Toaster } from '@/components/ui/toaster';
+import { getAuthSession } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 import { AppContextMenu } from '@/src/features/contextMenu/AppContextMenu';
+import { Footer } from "@/src/features/layout/Footer";
+import { Header } from "@/src/features/layout/Header";
+import { ReduxStoreProvider } from '@/src/redux/ReduxStoreProvider';
+import { ThemeProvider } from "@/src/theme/ThemeProvider";
+import { Info } from "lucide-react";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import React from "react";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,7 +35,7 @@ export default async function RootLayout({
                         <AppContextMenu>
                             <div className={'flex flex-col h-full'}>
                                 <Header />
-                                <div className="flex-1 max-w-xl m-auto py-6 w-full">
+                                <div className="flex-1 w-full max-w-xl py-6 m-auto pb-14">
                                     {session?.user ? children : <div className={'p-3 rounded-lg bg-blue-500 w-fit mx-auto'}>
                                         <p className={'flex items-center justify-center text-lg font-medium text-white'}>
                                             <Info size={20} className={'mr-2'} />
