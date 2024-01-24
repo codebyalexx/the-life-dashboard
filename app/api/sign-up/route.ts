@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { validateEmail } from "@/lib/utils";
 import { NextRequest, NextResponse } from "next/server";
+import sha1 from "sha1";
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,7 +37,8 @@ export async function POST(req: NextRequest) {
         error: "Votre mot de passe doit contenir plus de 6 caractères",
       });
 
-    if (errs.length > 0) return NextResponse.json(errs[0], { status: 400 });
+    if (errs.length > 0)
+      return NextResponse.json({ error: errs[0] }, { status: 400 });
 
     // It's checking if the email is already in used
 
@@ -49,8 +51,10 @@ export async function POST(req: NextRequest) {
     if (emailDb.length > 0)
       return NextResponse.json(
         {
-          input: "email",
-          error: "Cette adresse email est déjà utilisée",
+          error: {
+            input: "email",
+            error: "Cette adresse email est déjà utilisée",
+          },
         },
         { status: 409 }
       );
@@ -61,14 +65,11 @@ export async function POST(req: NextRequest) {
       data: {
         name,
         email,
-        password,
+        password: sha1(password),
       },
     });
 
-    return NextResponse.json(
-      { data: accountCreation, success: true },
-      { status: 200 }
-    );
+    return NextResponse.json({ data: null, success: true }, { status: 200 });
   } catch (e) {
     return NextResponse.json(
       {
