@@ -45,3 +45,8 @@ misc/**/migrations/
 databases/**/migrations/
 experimental/**/*.db
 dev.db
+
+# ides
+.code/
+.vscode/
+.idea/
