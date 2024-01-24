@@ -1,8 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { AuthOptions, getServerSession } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import sha1 from "sha1";
 import { env } from "./env";
 
 const profileTemplate = (profile: any) => ({
@@ -30,6 +32,31 @@ export const authOptions: AuthOptions = {
         email: profile.email,
         image: profile.picture,
       }),
+    }),
+    Credentials({
+      name: "credentials",
+      credentials: {},
+
+      async authorize(credentials: any) {
+        const { email, password } = credentials;
+
+        try {
+          const user = (await prisma.user.findUnique({
+            where: {
+              email,
+            },
+          })) as any;
+
+          if (!user) return null;
+
+          const encryptedPassword = sha1(password);
+          const doesPasswordsMatch = user.password === encryptedPassword;
+
+          if (!doesPasswordsMatch) return null;
+
+          return user;
+        } catch (error) {}
+      },
     }),
   ],
   callbacks: {

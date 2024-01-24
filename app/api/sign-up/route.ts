@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
     // Everything is fine so it's creating the account in the database
 
-    const accountCreation = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name,
         email,
