@@ -49,6 +49,7 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  password      String?
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -68,17 +69,17 @@ model UserHabit {
   id         String  @id @default(cuid())
   categoryId String? @default("Default")
 
-  name         String @default("Default")
-  repeatSchema String @default("Daily")
-  moment       String @default("AllDay")
-  doneDays UserHabitDay[]
+  name         String         @default("Default")
+  repeatSchema String         @default("Daily")
+  moment       String         @default("AllDay")
+  doneDays     UserHabitDay[]
 
   createdAt DateTime  @default(now())
   startAt   DateTime  @default(now())
   endsAt    DateTime?
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 }
 
 model UserHabitDay {
@@ -87,7 +88,7 @@ model UserHabitDay {
   date String @default("01011970")
 
   habit   UserHabit @relation(fields: [habitId], references: [id])
-  habitId String 
+  habitId String
 }
 
 model UserGoals {
