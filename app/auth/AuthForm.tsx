@@ -3,24 +3,66 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { validateEmail } from "@/lib/utils"
 import { Github } from "lucide-react"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
+import { useState } from "react"
 
 export const AuthForm = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  
+  const [errors, setErrors] = useState([] as {input: string, error: string}[])
+  const [submitted, setSubmitted] = useState(false)
+
+  const validateForm = () => {
+    if (!submitted) return
+    const errs = [] as any
+
+    if (!validateEmail(email))
+      errs.push({
+        input: 'email',
+        error: 'Votre adresse email est invalide'
+      })
+    
+    if (!password)
+      errs.push({
+        input: 'password',
+        error: 'Votre mot de passe ne doit pas être vide'
+      })
+
+    setErrors(errs)
+    return errs.length === 0
+  }
+
+  const emailError = errors.find((e: any) => e.input === 'email') || undefined
+  const passwordError = errors.find((e: any) => e.input === 'password') || undefined
+
   return (
     <>
       <h2 className="mb-10 text-2xl font-bold text-center">Connexion</h2>
-      <form className="mb-4 space-y-6">
+      <form className="mb-4 space-y-6" onSubmit={(e) => e.preventDefault()}>
         <div className="space-y-1">
           <Label htmlFor="email">Adresse email</Label>
-          <Input id="email" placeholder="Indiquez votre adresse email" required type="email" />
+          <Input className={emailError ? "border-red-500 border-2" : ""} id="email" placeholder="Indiquez votre adresse email" type="email" value={email} onChange={(e: any) => {setEmail(e.target.value); validateForm()}} />
+          {emailError ? <p className="mt-1 text-sm font-medium text-red-500">{emailError.error}</p> : ""}
         </div>
         <div className="space-y-1">
           <Label htmlFor="password">Mot de passe</Label>
-          <Input id="password" placeholder="Indiquez votre mot de passe" required type="password" />
+          <Input className={passwordError ? "border-red-500 border-2" : ""} id="password" placeholder="Indiquez votre mot de passe" type="password" value={password} onChange={(e: any) => {setPassword(e.target.value); validateForm()}} />
+          {passwordError ? <p className="mt-1 text-sm font-medium text-red-500">{passwordError.error}</p> : ""}
         </div>
-        <Button className="w-full" type="submit">
+        <Button className="w-full" type="submit" onClick={() => {
+          setSubmitted(true)
+
+          if (!validateForm()) return
+
+          signIn('credentials', {
+            email,
+            password
+          })
+        }}>
           Se connecter
         </Button>
       </form>
