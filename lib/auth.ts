@@ -34,11 +34,23 @@ export const authOptions: AuthOptions = {
       }),
     }),
     Credentials({
+      id: "app-login",
       name: "credentials",
-      credentials: {},
-
+      credentials: {
+        email: {
+          label: "Email",
+          type: "text",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+        },
+      },
       async authorize(credentials: any) {
-        const { email, password } = credentials;
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
 
         try {
           const user = (await prisma.user.findUnique({
@@ -55,7 +67,10 @@ export const authOptions: AuthOptions = {
           if (!doesPasswordsMatch) return null;
 
           return user;
-        } catch (error) {}
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
       },
     }),
   ],
@@ -69,6 +84,10 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: "/auth",
   },
+  session: {
+    strategy: "database",
+  },
+  debug: process.env.NODE_ENV === "development",
   secret: env.JWT_SECRET,
 };
 
