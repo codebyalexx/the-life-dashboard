@@ -1,9 +1,11 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { validateEmail } from "@/lib/utils"
+import { CheckCircleIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -51,7 +53,7 @@ export const RegisterForm = () => {
   const emailError = errors.find((e: any) => e.input === 'email') || undefined
   const passwordError = errors.find((e: any) => e.input === 'password') || undefined
 
-  return (<>
+  return (submitted === 2 ? <RegisterFormSuccess /> : <>
     <h2 className="mb-10 text-2xl font-bold text-center" onSubmit={(e) => e.preventDefault()}>Inscription</h2>
     <form className="mb-4 space-y-6" onSubmit={(e) => e.preventDefault()}>
       <div className="space-y-1">
@@ -94,6 +96,10 @@ export const RegisterForm = () => {
                 {...error}
               ])
             }
+
+            if (data.success) {
+              setSubmitted(2)
+            }
           })
           .catch((err) => {
             
@@ -104,4 +110,19 @@ export const RegisterForm = () => {
     </form>
 		<p className="text-sm text-center">Déjà inscrit ? <Link href={'/auth'} className="text-blue-400 underline">Se connecter</Link></p>
   </>)
+}
+
+export const RegisterFormSuccess = () => {
+  return (<div className="flex flex-col items-center justify-center p-4">
+    <Alert className="w-full max-w-md mb-4">
+      <CheckCircleIcon className="w-6 h-6" />
+      <AlertTitle>Registration Successful</AlertTitle>
+      <AlertDescription>You have successfully registered for our service.</AlertDescription>
+    </Alert>
+    <Link href={'/auth'} className={buttonVariants({
+      variant: "outline"
+    })}>
+      Login
+    </Link>
+  </div>)
 }
